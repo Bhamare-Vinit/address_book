@@ -4,18 +4,24 @@ class Address_Book:
     def __init__(self):
         self.contact={}
     def addContact(self,fname=None,lname=None,address=None,city=None,state=None,zip=None,phone_number=None,email=None):
-        print("This on ")
         if fname!=None and lname!=None and address!=None and city!=None and state!=None and zip!=None and phone_number!=None and email!=None :
             if phone_number not in self.contact:
-                self.contact[phone_number]=[fname,lname,address,city,state,zip,email]
+                self.contact[phone_number]={"firstname":fname,"lastname":lname,"address":address,"city":city,"state":state,"zip_code":zip,"email":email}
+                # [fname,lname,address,city,state,zip,email]
                 print(f"Added successfully {self.contact}")
+                print(self.contact)
             else:
                 print(f"{phone_number} is all ready exist in adress book")
         else:
             print("Envalid Input ")
 
-    def display():
-        pass
+    def display(self):
+        if self.contact:
+            for number, details in self.contact.items():
+                print(f"Phone Number: {number}, Details: {details}")
+        else:
+            print("No contacts found.")
+
 
     def console(self):
         while True:
@@ -43,8 +49,11 @@ class Address_Book:
                         phone_number = None
                     if len(email) == 0:
                         email = None
-                    
+
                     self.addContact(fname, lname, address, city, state, zip, phone_number, email)
+
+                if n==2:
+                    self.display()
             except Exception as e:
                 pass         
 
