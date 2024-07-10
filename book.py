@@ -1,28 +1,52 @@
 
-def get_contact_details():
-    contact = {
-        "first_name": input("Enter first name: "),
-        "last_name": input("Enter last name: "),
-        "address": input("Enter address: "),
-        "city": input("Enter city: "),
-        "state": input("Enter state: "),
-        "zip": input("Enter zip code: "),
-        "phone_number": input("Enter phone number: "),
-        "email": input("Enter email: ")
-    }
-    return contact
 
-def display_contact(contact):
-    print("\nContact Information:")
-    print(f"First Name: {contact['first_name']}")
-    print(f"Last Name: {contact['last_name']}")
-    print(f"Address: {contact['address']}")
-    print(f"City: {contact['city']}")
-    print(f"State: {contact['state']}")
-    print(f"Zip: {contact['zip']}")
-    print(f"Phone Number: {contact['phone_number']}")
-    print(f"Email: {contact['email']}")
+class Address_Book:
+    def __init__(self):
+        self.contact={}
+    def addContact(self,fname=None,lname=None,address=None,city=None,state=None,zip=None,phone_number=None,email=None):
+        print("This on ")
+        if fname!=None and lname!=None and address!=None and city!=None and state!=None and zip!=None and phone_number!=None and email!=None :
+            if phone_number not in self.contact:
+                self.contact[phone_number]=[fname,lname,address,city,state,zip,email]
+                print(f"Added successfully {self.contact}")
+            else:
+                print(f"{phone_number} is all ready exist in adress book")
+        else:
+            print("Envalid Input ")
 
-contact = get_contact_details()
+    def display():
+        pass
 
-display_contact(contact)
+    def console(self):
+        while True:
+            try:
+                print("\n1. Add Contact\n2. Delete Contact\n3. Edit Contact\n4. Search Contact\n5. View Contacts\n6. Stop")
+                n = int(input("Enter your options: "))
+                if n == 1:
+                    fname = input("Enter first name: ")
+                    lname= input("Enter last name: ")
+                    address = input("Address: ")
+                    city=input("Enter the city: ")
+                    state=input("Enter the state: ")
+                    zip=input("Enter the zip code: ")
+                    phone_number = input("Phone Number: ")
+                    email = input("Email: ")
+                    if len(fname) == 0:
+                        fname = None
+                    if len(lname) == 0:
+                        lname = None
+                    if len(address) == 0:
+                        address = None
+                    if len(city) == 0:
+                        city = None
+                    if len(phone_number) == 0:
+                        phone_number = None
+                    if len(email) == 0:
+                        email = None
+                    
+                    self.addContact(fname, lname, address, city, state, zip, phone_number, email)
+            except Exception as e:
+                pass         
+
+contact_book = Address_Book()
+contact_book.console()
