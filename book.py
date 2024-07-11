@@ -41,6 +41,19 @@ class Address_Book:
         else:
             print("No contacts found.")
 
+    def search_by_city(self,search_city):
+        if self.contact:
+            for number,details in self.contact.items():
+                if details["city"]==search_city:
+                    print(f"Phone Number: {number}, Details: {details}")
+        else:
+            print("No contacts found.")
+                    
+
+
+
+
+
     def edit_entry(self, fname=None, lname=None, address=None, city=None, state=None, zip=None, phone_number=None, email=None):
         if phone_number and phone_number in self.contact:
             lst_info = self.contact[phone_number]
@@ -126,7 +139,16 @@ class Address_Book:
                         book.delete_entry(phone_number)
                     else:
                         print(f"Address book '{book_name}' does not exist.")
-                elif n == 6:
+                elif n==6:
+                    book_name = input("Enter the name of the address book to display: ")
+                    book = manager.get_address_book(book_name)
+                    if book:
+                        search_city=input("Enter the city you want to search: ")
+                        book.search_by_city(search_city)
+                    else:
+                        print(f"Address book '{book_name}' does not exist.")
+
+                elif n == 7:
                     break
             except Exception as e:
                 print(f"An error occurred: {e}")
