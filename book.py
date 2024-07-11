@@ -1,20 +1,38 @@
+class AddressBookManager:
+    def __init__(self):
+        self.address_books = {}
 
+    def create_address_book(self, book_name):
+        if book_name not in self.address_books:
+            self.address_books[book_name] = Address_Book()
+            print(f"Address book '{book_name}' created successfully.")
+        else:
+            print(f"Address book '{book_name}' already exists.")
+
+    def get_address_book(self, book_name):
+        return self.address_books.get(book_name, None)
 
 class Address_Book:
     def __init__(self):
-        self.contact={}
-        
-    def addContact(self,fname=None,lname=None,address=None,city=None,state=None,zip=None,phone_number=None,email=None):
-        if fname!=None and lname!=None and address!=None and city!=None and state!=None and zip!=None and phone_number!=None and email!=None :
+        self.contact = {}
+
+    def add_contact(self, fname=None, lname=None, address=None, city=None, state=None, zip=None, phone_number=None, email=None):
+        if fname and lname and address and city and state and zip and phone_number and email:
             if phone_number not in self.contact:
-                self.contact[phone_number]={"firstname":fname,"lastname":lname,"address":address,"city":city,"state":state,"zip_code":zip,"email":email}
-                # [fname,lname,address,city,state,zip,email]
+                self.contact[phone_number] = {
+                    "firstname": fname,
+                    "lastname": lname,
+                    "address": address,
+                    "city": city,
+                    "state": state,
+                    "zip_code": zip,
+                    "email": email
+                }
                 print(f"Added successfully {self.contact}")
-                print(self.contact)
             else:
-                print(f"{phone_number} is all ready exist in adress book")
+                print(f"{phone_number} already exists in address book")
         else:
-            print("Envalid Input ")
+            print("Invalid input")
 
     def display(self):
         if self.contact:
@@ -23,104 +41,97 @@ class Address_Book:
         else:
             print("No contacts found.")
 
-
-    def edit_entry(self,fname=None,lname=None,address=None,city=None,state=None,zip=None,phone_number=None,email=None):
-        if phone_number != None and phone_number in self.contact:
+    def edit_entry(self, fname=None, lname=None, address=None, city=None, state=None, zip=None, phone_number=None, email=None):
+        if phone_number and phone_number in self.contact:
             lst_info = self.contact[phone_number]
-            print(lst_info)
-            if fname != None:
+            if fname:
                 lst_info["firstname"] = fname
-            if lname != None:
+            if lname:
                 lst_info["lastname"] = lname
-            if address != None:
+            if address:
                 lst_info["address"] = address
-            if city != None:
+            if city:
                 lst_info["city"] = city
-            if state != None:
+            if state:
                 lst_info["state"] = state
-            if zip != None:
-                lst_info["zip"] = zip
-            if email != None:
+            if zip:
+                lst_info["zip_code"] = zip
+            if email:
                 lst_info["email"] = email
             self.contact[phone_number] = lst_info
             print("Data updated successfully")
         else:
-            print("Phone number does not exists in the database")
-    
-    def delete_entry(self,phone_number=None):
-        if phone_number != None and phone_number in self.contact:
+            print("Phone number does not exist in the database")
+
+    def delete_entry(self, phone_number=None):
+        if phone_number and phone_number in self.contact:
             del self.contact[phone_number]
-            print("Contact address deleted successfully!")
+            print("Contact deleted successfully!")
         else:
-            print("Phone number does not exists in the database")
-
-
-
+            print("Phone number does not exist in the database")
 
     def console(self):
         while True:
             try:
-                print("\n1. Add Contact\n2. Display Book\n3. Edit Contact\n4. Search Contact\n5. View Contacts\n6. Stop")
-                n = int(input("Enter your options: "))
+                print("\n1. Create Address Book\n2. Add Contact\n3. Display Book\n4. Edit Contact\n5. Delete Contact\n6. Exit\n")
+                n = int(input("Enter your option: "))
                 if n == 1:
-                    n=int(input("Enter the number of entry you want to add: "))
-                    for i in range(n):
+                    book_name = input("Enter the name of the new address book: ")
+                    manager.create_address_book(book_name)
+                elif n == 2:
+                    book_name = input("Enter the name of the address book to add a contact: ")
+                    book = manager.get_address_book(book_name)
+                    if book:
+                        num=int(input("Enter the number of entries you want to add: "))
+                        for i in range(num):
+
+                            fname = input("Enter first name: ")
+                            lname = input("Enter last name: ")
+                            address = input("Address: ")
+                            city = input("Enter the city: ")
+                            state = input("Enter the state: ")
+                            zip = input("Enter the zip code: ")
+                            phone_number = input("Phone Number: ")
+                            email = input("Email: ")
+                            book.add_contact(fname, lname, address, city, state, zip, phone_number, email)
+                    else:
+                        print(f"Address book '{book_name}' does not exist.")
+                elif n == 3:
+                    book_name = input("Enter the name of the address book to display: ")
+                    book = manager.get_address_book(book_name)
+                    if book:
+                        book.display()
+                    else:
+                        print(f"Address book '{book_name}' does not exist.")
+                elif n == 4:
+                    book_name = input("Enter the name of the address book to edit a contact: ")
+                    book = manager.get_address_book(book_name)
+                    if book:
+                        phone_number = input("Phone Number to edit: ")
                         fname = input("Enter first name: ")
-                        lname= input("Enter last name: ")
+                        lname = input("Enter last name: ")
                         address = input("Address: ")
-                        city=input("Enter the city: ")
-                        state=input("Enter the state: ")
-                        zip=input("Enter the zip code: ")
-                        phone_number = input("Phone Number: ")
+                        city = input("Enter the city: ")
+                        state = input("Enter the state: ")
+                        zip = input("Enter the zip code: ")
                         email = input("Email: ")
-                        if len(fname) == 0:
-                            fname = None
-                        if len(lname) == 0:
-                            lname = None
-                        if len(address) == 0:
-                            address = None
-                        if len(city) == 0:
-                            city = None
-                        if len(phone_number) == 0:
-                            phone_number = None
-                        if len(email) == 0:
-                            email = None
-
-                        self.addContact(fname, lname, address, city, state, zip, phone_number, email)
-
-                if n==2:
-                    self.display()
-                
-                if n==3:
-                    fname = input("Enter first name: ")
-                    lname= input("Enter last name: ")
-                    address = input("Address: ")
-                    city=input("Enter the city: ")
-                    state=input("Enter the state: ")
-                    zip=input("Enter the zip code: ")
-                    phone_number = input("Phone Number: ")
-                    email = input("Email: ")
-                    if len(fname) == 0:
-                        fname = None
-                    if len(lname) == 0:
-                        lname = None
-                    if len(address) == 0:
-                        address = None
-                    if len(city) == 0:
-                        city = None
-                    if len(phone_number) == 0:
-                        phone_number = None
-                    if len(email) == 0:
-                        email = None
-                    self.edit_entry(fname, lname, address, city, state, zip, phone_number, email)
-                if n==4:
-                    phone_number = input("Enter the Phone Number you want to delete: ")
-                    if len(phone_number) == 0:
-                        phone_number = None
-                    self.delete_entry(phone_number)
-
+                        book.edit_entry(fname, lname, address, city, state, zip, phone_number, email)
+                    else:
+                        print(f"Address book '{book_name}' does not exist.")
+                elif n == 5:
+                    book_name = input("Enter the name of the address book to delete a contact: ")
+                    book = manager.get_address_book(book_name)
+                    if book:
+                        phone_number = input("Enter the Phone Number you want to delete: ")
+                        book.delete_entry(phone_number)
+                    else:
+                        print(f"Address book '{book_name}' does not exist.")
+                elif n == 6:
+                    break
             except Exception as e:
-                pass         
+                print(f"An error occurred: {e}")
 
-contact_book = Address_Book()
-contact_book.console()
+# Example usage:
+manager = AddressBookManager()
+console = Address_Book()
+console.console()
