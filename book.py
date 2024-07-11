@@ -41,6 +41,44 @@ class Address_Book:
         else:
             print("No contacts found.")
 
+    def get_count_city(self):
+        city={}
+        if self.contact:
+            for number,details in self.contact.items():
+                if details["city"] not in city:
+                    city[details["city"]]=1
+                elif details["city"] in city:
+                    city[details["city"]]+=1
+                else:
+                    pass
+            print(city)
+            print(f"{'City':^10} - {'Count':^10}")
+
+            for citys,count in city.items():
+                print(f"{citys: ^10} : {count: ^10}")
+        else:
+            print("No contacts found.")
+
+    def get_count_state(self):
+        state={}
+        if self.contact:
+            for number,details in self.contact.items():
+                if details["state"] not in state:
+                    state[details["state"]]=1
+                elif details["state"] in state:
+                    state[details["state"]]+=1
+                else:
+                    pass
+            print(state)
+            print(f"{'State':^10} - {'Count':^10}")
+            for states,count in state.items():
+                print(f"{states: ^10} : {count: ^10}")
+        else:
+            print("No contacts found.")
+                
+                
+
+
     def search_by_city(self,search_city):
         if self.contact:
             print(f"People who lives in {search_city} city:")
@@ -49,6 +87,7 @@ class Address_Book:
                     print(f"Phone Number: {number}, Details: {details}")
         else:
             print("No contacts found.")
+
     def search_by_state(self,search_state):
         if self.contact:
             print(f"People who lives in {search_state} state:")
@@ -154,7 +193,7 @@ class Address_Book:
                     book_name = input("Enter the name of the address book to display: ")
                     book = manager.get_address_book(book_name)
                     if book:
-                        print("\n1. Search using city\n2. search using state\n")
+                        print("\n1. Search using city\n2. search using state\n3. get count by city\n4. get count by state")
                         n = int(input("Enter your option: "))
                         if n==1:
                             search_city=input("Enter the city you want to search: ")
@@ -162,8 +201,13 @@ class Address_Book:
                         elif n==2:
                             search_state=input("Enter the name of state: ")
                             book.search_by_state(search_state)
+                        elif n==3:
+                            book.get_count_city()
+                        elif n==4:
+                            book.get_count_state()
+
                         else:
-                            print("Envalid number")
+                            print("Invalid number")
                     else:
                         print(f"Address book '{book_name}' does not exist.")
 
@@ -172,7 +216,6 @@ class Address_Book:
             except Exception as e:
                 print(f"An error occurred: {e}")
 
-# Example usage:
 manager = AddressBookManager()
 consoles = Address_Book()
 consoles.console(manager)
