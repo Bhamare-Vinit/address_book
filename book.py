@@ -45,6 +45,15 @@ class Address_Book:
             print("Data updated successfully")
         else:
             print("Phone number does not exists in the database")
+    
+    def delete_entry(self,phone_number=None):
+        if phone_number != None and phone_number in self.contact:
+            del self.contact[phone_number]
+            print("Contact address deleted successfully!")
+        else:
+            print("Phone number does not exists in the database")
+
+
 
 
     def console(self):
@@ -101,6 +110,12 @@ class Address_Book:
                     if len(email) == 0:
                         email = None
                     self.edit_entry(fname, lname, address, city, state, zip, phone_number, email)
+                if n==4:
+                    phone_number = input("Enter the Phone Number you want to delete: ")
+                    if len(phone_number) == 0:
+                        phone_number = None
+                    self.delete_entry(phone_number)
+
             except Exception as e:
                 pass         
 
