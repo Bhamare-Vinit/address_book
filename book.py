@@ -70,7 +70,7 @@ class Address_Book:
         else:
             print("Phone number does not exist in the database")
 
-    def console(self):
+    def console(self,manager):
         while True:
             try:
                 print("\n1. Create Address Book\n2. Add Contact\n3. Display Book\n4. Edit Contact\n5. Delete Contact\n6. Exit\n")
@@ -133,5 +133,5 @@ class Address_Book:
 
 # Example usage:
 manager = AddressBookManager()
-console = Address_Book()
-console.console()
+consoles = Address_Book()
+consoles.console(manager)
