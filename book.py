@@ -43,11 +43,22 @@ class Address_Book:
 
     def search_by_city(self,search_city):
         if self.contact:
+            print(f"People who lives in {search_city} city:")
             for number,details in self.contact.items():
                 if details["city"]==search_city:
                     print(f"Phone Number: {number}, Details: {details}")
         else:
             print("No contacts found.")
+    def search_by_state(self,search_state):
+        if self.contact:
+            print(f"People who lives in {search_state} state:")
+            for number,details in self.contact.items():
+                if details["state"]==search_state:
+                    # print(f"Phone Number: {number}, Details: {details}")
+                    print(f"{details["firstname"]} {details["lastname"]}")
+        else:
+            print("No contacts found.")
+
                     
 
 
@@ -86,7 +97,7 @@ class Address_Book:
     def console(self,manager):
         while True:
             try:
-                print("\n1. Create Address Book\n2. Add Contact\n3. Display Book\n4. Edit Contact\n5. Delete Contact\n6. Exit\n")
+                print("\n1. Create Address Book\n2. Add Contact\n3. Display Book\n4. Edit Contact\n5. Delete Contact\n6. Search by\n7. Exit")
                 n = int(input("Enter your option: "))
                 if n == 1:
                     book_name = input("Enter the name of the new address book: ")
@@ -143,8 +154,16 @@ class Address_Book:
                     book_name = input("Enter the name of the address book to display: ")
                     book = manager.get_address_book(book_name)
                     if book:
-                        search_city=input("Enter the city you want to search: ")
-                        book.search_by_city(search_city)
+                        print("\n1. Search using city\n2. search using state\n")
+                        n = int(input("Enter your option: "))
+                        if n==1:
+                            search_city=input("Enter the city you want to search: ")
+                            book.search_by_city(search_city)
+                        elif n==2:
+                            search_state=input("Enter the name of state: ")
+                            book.search_by_state(search_state)
+                        else:
+                            print("Envalid number")
                     else:
                         print(f"Address book '{book_name}' does not exist.")
 
