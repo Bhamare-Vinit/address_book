@@ -1,5 +1,6 @@
+
 from collections import OrderedDict
-import csv
+import json
 import os
 
 class AddressBookManager:
@@ -19,16 +20,18 @@ class AddressBookManager:
         return self.address_books.get(book_name, None)
 
     def save_address_books(self):
-        for book_name, book in self.address_books.items():
-            book.save_contacts()
+        with open('address_books.json', 'w') as file:
+            json.dump({book_name: book.contact for book_name, book in self.address_books.items()}, file)
 
     def load_address_books(self):
-        for file in os.listdir():
-            if file.endswith('.csv'):
-                book_name = file[:-4]
-                address_book = Address_Book(book_name)
-                address_book.load_contacts()
-                self.address_books[book_name] = address_book
+        if os.path.exists('address_books.json'):
+            with open('address_books.json', 'r') as file:
+                address_books_data = json.load(file)
+                for book_name, contacts in address_books_data.items():
+                    address_book = Address_Book(book_name)
+                    address_book.contact = contacts
+                    self.address_books[book_name] = address_book
+
 
 class Address_Book:
     def __init__(self, name):
@@ -69,6 +72,7 @@ class Address_Book:
                 self.contact = dict(sorted(self.contact.items(), key=lambda item: item[1]['firstname']))
 
                 for number, details in self.contact.items():
+                    print("K")
                     print(f"Phone Number: {number}, Details: {details}")
 
         else:
@@ -165,26 +169,7 @@ class Address_Book:
             print("Phone number does not exist in the database")
 
     def save_contacts(self):
-        with open(f'{self.name}.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(["phone_number", "firstname", "lastname", "address", "city", "state", "zip_code", "email"])
-            for phone_number, details in self.contact.items():
-                writer.writerow([phone_number] + list(details.values()))
-
-    def load_contacts(self):
-        if os.path.exists(f'{self.name}.csv'):
-            with open(f'{self.name}.csv', 'r') as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    self.contact[row['phone_number']] = {
-                        "firstname": row['firstname'],
-                        "lastname": row['lastname'],
-                        "address": row['address'],
-                        "city": row['city'],
-                        "state": row['state'],
-                        "zip_code": row['zip_code'],
-                        "email": row['email']
-                    }
+        manager.save_address_books()
 
     def console(self, manager):
         while True:
