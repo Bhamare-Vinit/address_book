@@ -1,4 +1,6 @@
 from collections import OrderedDict
+import numpy as np
+
 
 class AddressBookManager:
     def __init__(self):
@@ -38,9 +40,22 @@ class Address_Book:
 
     def display(self):
         if self.contact:
-            self.contact = OrderedDict(sorted(self.contact.items()))
-            for number, details in self.contact.items():
-                print(f"Phone Number: {number}, Details: {details}")
+            print("\n1. Sort by Phone Number\n2. Sort by Name")
+            n = int(input("Enter your option: "))
+            if n == 1:
+                print("Print sorted value by key!")
+                self.contact = OrderedDict(sorted(self.contact.items()))
+                for number, details in self.contact.items():
+                    print(f"Phone Number: {number}, Details: {details}")
+
+            elif n==2:
+                print("Print sorted value by firstname!")
+                self.contact = dict(sorted(self.contact.items(), key=lambda item: item[1]['firstname']))
+
+                for number, details in self.contact.items():
+                    print("K")
+                    print(f"Phone Number: {number}, Details: {details}")
+
         else:
             print("No contacts found.")
 
@@ -99,7 +114,6 @@ class Address_Book:
             print(f"People who lives in {search_state} state:")
             for number,details in self.contact.items():
                 if details["state"]==search_state:
-                    # print(f"Phone Number: {number}, Details: {details}")
                     print(f"{details["firstname"]} {details["lastname"]}")
         else:
             print("No contacts found.")
