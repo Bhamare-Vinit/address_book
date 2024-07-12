@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import csv
 import os
 
 class AddressBookManager:
@@ -11,7 +12,6 @@ class AddressBookManager:
             self.address_books[book_name] = Address_Book(book_name)
             self.save_address_books()
             print(f"Address book '{book_name}' created successfully.")
-            print('...')
         else:
             print(f"Address book '{book_name}' already exists.")
 
@@ -24,7 +24,7 @@ class AddressBookManager:
 
     def load_address_books(self):
         for file in os.listdir():
-            if file.endswith('.txt'):
+            if file.endswith('.csv'):
                 book_name = file[:-4]
                 address_book = Address_Book(book_name)
                 address_book.load_contacts()
@@ -47,8 +47,7 @@ class Address_Book:
                     "zip_code": zip,
                     "email": email
                 }
-                print(f"Added successfully ")
-                print(f"{self.contact}")
+                print(f"Added successfully {self.contact}")
                 self.save_contacts()
             else:
                 print(f"{phone_number} already exists in address book")
@@ -166,23 +165,25 @@ class Address_Book:
             print("Phone number does not exist in the database")
 
     def save_contacts(self):
-        with open(f'{self.name}.txt', 'w') as file:
+        with open(f'{self.name}.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["phone_number", "firstname", "lastname", "address", "city", "state", "zip_code", "email"])
             for phone_number, details in self.contact.items():
-                file.write(f"{phone_number},{details['firstname']},{details['lastname']},{details['address']},{details['city']},{details['state']},{details['zip_code']},{details['email']}\n")
+                writer.writerow([phone_number] + list(details.values()))
 
     def load_contacts(self):
-        if os.path.exists(f'{self.name}.txt'):
-            with open(f'{self.name}.txt', 'r') as file:
-                for line in file:
-                    phone_number, firstname, lastname, address, city, state, zip_code, email = line.strip().split(',')
-                    self.contact[phone_number] = {
-                        "firstname": firstname,
-                        "lastname": lastname,
-                        "address": address,
-                        "city": city,
-                        "state": state,
-                        "zip_code": zip_code,
-                        "email": email
+        if os.path.exists(f'{self.name}.csv'):
+            with open(f'{self.name}.csv', 'r') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    self.contact[row['phone_number']] = {
+                        "firstname": row['firstname'],
+                        "lastname": row['lastname'],
+                        "address": row['address'],
+                        "city": row['city'],
+                        "state": row['state'],
+                        "zip_code": row['zip_code'],
+                        "email": row['email']
                     }
 
     def console(self, manager):

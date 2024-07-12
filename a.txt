@@ -1,4 +1,0 @@
-v,v,v,v,v,v,v,v
-o,o,o,o,o,o,o,o
-a,a,a,a,a,a,a,a
-h,h,h,h,h,h,h,h
