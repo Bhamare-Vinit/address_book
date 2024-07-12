@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 class AddressBookManager:
     def __init__(self):
         self.address_books = {}
@@ -36,6 +38,7 @@ class Address_Book:
 
     def display(self):
         if self.contact:
+            self.contact = OrderedDict(sorted(self.contact.items()))
             for number, details in self.contact.items():
                 print(f"Phone Number: {number}, Details: {details}")
         else:
@@ -44,6 +47,7 @@ class Address_Book:
     def get_count_city(self):
         city={}
         if self.contact:
+            self.contact = OrderedDict(sorted(self.contact.items()))
             for number,details in self.contact.items():
                 if details["city"] not in city:
                     city[details["city"]]=1
@@ -52,6 +56,7 @@ class Address_Book:
                 else:
                     pass
             print(city)
+            city=OrderedDict(sorted(city.items()))
             print(f"{'City':^10} - {'Count':^10}")
 
             for citys,count in city.items():
@@ -62,6 +67,7 @@ class Address_Book:
     def get_count_state(self):
         state={}
         if self.contact:
+            self.contact = OrderedDict(sorted(self.contact.items()))
             for number,details in self.contact.items():
                 if details["state"] not in state:
                     state[details["state"]]=1
@@ -70,17 +76,16 @@ class Address_Book:
                 else:
                     pass
             print(state)
+            state=OrderedDict(sorted(state.items()))
             print(f"{'State':^10} - {'Count':^10}")
             for states,count in state.items():
                 print(f"{states: ^10} : {count: ^10}")
         else:
             print("No contacts found.")
                 
-                
-
-
     def search_by_city(self,search_city):
         if self.contact:
+            self.contact = OrderedDict(sorted(self.contact.items()))
             print(f"People who lives in {search_city} city:")
             for number,details in self.contact.items():
                 if details["city"]==search_city:
@@ -90,6 +95,7 @@ class Address_Book:
 
     def search_by_state(self,search_state):
         if self.contact:
+            self.contact = OrderedDict(sorted(self.contact.items()))
             print(f"People who lives in {search_state} state:")
             for number,details in self.contact.items():
                 if details["state"]==search_state:
@@ -97,12 +103,6 @@ class Address_Book:
                     print(f"{details["firstname"]} {details["lastname"]}")
         else:
             print("No contacts found.")
-
-                    
-
-
-
-
 
     def edit_entry(self, fname=None, lname=None, address=None, city=None, state=None, zip=None, phone_number=None, email=None):
         if phone_number and phone_number in self.contact:
@@ -216,6 +216,7 @@ class Address_Book:
             except Exception as e:
                 print(f"An error occurred: {e}")
 
-manager = AddressBookManager()
-consoles = Address_Book()
-consoles.console(manager)
+if __name__=="__main__": 
+    manager = AddressBookManager()
+    consoles = Address_Book()
+    consoles.console(manager)
